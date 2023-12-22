@@ -14,6 +14,7 @@
 - For the pagination, I could update the page value, but this wouldn't trigger another API request.  If the input doesn't change, the API request will not be triggered.  
 - The `loadSearch` method uses `distinctUntilChanged`.  This might prevent the `loadSearch` method from being called again as `search` has not changed.  
 - Ultimately, the quickest solution was to duplicate `loadSearch`. I called the new method `newPageSearch` and called it inside the `nextPage` and `prevPage` methods.  Inside `newPageSearch`, I removed the `distinctUntilChanged` and the `debounceTime` calls.  So there is a slight benefit from using the new method, as the API request can happen as soon as the buttons are pressed.
+- The challenge code includes an API key for flickr.  Although it is already exposed, I shouldn't have included in my repo.  So I removed it and will an environments folder with a API_KEY variable and a key there.  
 
 ## Continued Development
 
