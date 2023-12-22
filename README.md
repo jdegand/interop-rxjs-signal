@@ -14,13 +14,30 @@
 - For the pagination, I could update the page value, but this wouldn't trigger another API request.  If the input doesn't change, the API request will not be triggered.  
 - The `loadSearch` method uses `distinctUntilChanged`.  This might prevent the `loadSearch` method from being called again as `search` has not changed.  
 - Ultimately, the quickest solution was to duplicate `loadSearch`. I called the new method `newPageSearch` and called it inside the `nextPage` and `prevPage` methods.  Inside `newPageSearch`, I removed the `distinctUntilChanged` and the `debounceTime` calls.  So there is a slight benefit from using the new method, as the API request can happen as soon as the buttons are pressed.
-- The challenge code includes an API key for flickr.  Although it is already exposed, I shouldn't have included in my repo.  So I removed it and will an environments folder with a API_KEY variable and a key there.  
+- The challenge code includes an API key for `flickr`.  Although it is already exposed, I shouldn't have included in my repo.  So I removed it and added an environments folder with a `apiKey` variable.  Now, you can freely change API keys and not worry about including them in git. 
 
 ## Continued Development
 
 - Pagination implementation is kind of a mess.  I tried to explain a lot of the tradeoffs and problems I encountered.  
 - When you click back on the detail page, it resets the input and queries new photos.  This might be related to the lack of Local Storage.    
 - Testing -> I'd imagine this will be difficult.  
+
+## How to Use
+
+To clone and run this application, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
+
+```bash
+# Clone this repository
+$ git clone https://github.com/jdegand/interop-rxjs-signal.git
+
+# Install dependencies
+$ npm install
+
+# Need to add / update environment.development.ts file with an apiKey from flickr
+
+# Run the app and navigate to localhost:4200
+$ npm start
+```
 
 ## Useful Resources
 
