@@ -3,7 +3,7 @@ import { tapResponse } from '@ngrx/component-store';
 import { pipe } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import { Photo } from '../photo.model';
-import { PhotoService } from '../photos.service';
+import { PhotoService } from '../photo.service';
 import { signalStore, withState, withMethods, patchState, withHooks } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 
