@@ -98,7 +98,7 @@ function localStorageSync(){
   // even with this, you aren't guaranteed the exact order of images
   // the batch size is 30 images so the first and last pictures are more likely to change pages
 
-  // if add onDestroy is in this feature -> local storage won't work
+  // if you add onDestroy is in this feature -> local storage won't work
 
   return signalStoreFeature(
     withHooks({

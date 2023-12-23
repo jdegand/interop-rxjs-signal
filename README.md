@@ -17,7 +17,7 @@
 - Marko used a `signalStoreFeature` called `withStorageSync` to handle local storage.  I tried to import it, but the signal store API seems to have changed.  There are TypeScript issues and `$update` can't be used to update state.  
 - `withStorageSync` saves the whole state.  But since I have not segmented state, this doesn't work for this app.  Only the `search`, `page`, and `pages` need to be saved.  
 - So options are to try to recreate something similar or maybe just update the `onInit` hook inside `withHooks`.  You can't have multiple `onInit` hooks. 
-- Ultimately, I added a similar `signalStoreFeature` called `localStoreSync`.  I used object destructuring and `patchState` to update local state with values from local storage.  
+- Ultimately, I added a similar `signalStoreFeature` called `localStorageSync`.  I used object destructuring and `patchState` to update local state with values from local storage.  
 - The challenge code includes an API key for `flickr`.  Although it is already exposed, I shouldn't have included it in my repo.  So I removed it and added an environments folder with a `apiKey` variable.  Now, you can freely change API keys and not worry about including them in `git`.
 - I used `git filter branch` to rewrite history and remove the file from `git`.  When I added back the service, I changed the file name to `photo.service` instead of `photos.service`.
 
