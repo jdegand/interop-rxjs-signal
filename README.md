@@ -14,13 +14,16 @@
 - For the pagination, I could update the page value, but this wouldn't trigger another API request.  If the input doesn't change, the API request will not be triggered.  
 - The `loadSearch` method uses `distinctUntilChanged`.  This might prevent the `loadSearch` method from being called again as `search` has not changed.  
 - Ultimately, the quickest solution was to duplicate `loadSearch`. I called the new method `newPageSearch` and called it inside the `nextPage` and `prevPage` methods.  Inside `newPageSearch`, I removed the `distinctUntilChanged` and the `debounceTime` calls.  So there is a slight benefit from using the new method, as the API request can happen as soon as the buttons are pressed.
+- Marko used a `signalStoreFeature` called `withStorageSync` to handle local storage.  I tried to import it, but the signal store API seems to have changed.  There are TypeScript issues and `$update` can't be used to update state.  
+- `withStorageSync` saves the whole state.  But since I have not segmented state, this doesn't work for this app.  Only the `search`, `page`, and `pages` need to be saved.  
+- So options are to try to recreate something similar or maybe just update the `onInit` hook inside `withHooks`.  You can't have multiple `onInit` hooks. 
+- Ultimately, I added a similar `signalStoreFeature` called `localStoreSync`.  I used object destructuring and `patchState` to update local state with values from local storage.  
 - The challenge code includes an API key for `flickr`.  Although it is already exposed, I shouldn't have included it in my repo.  So I removed it and added an environments folder with a `apiKey` variable.  Now, you can freely change API keys and not worry about including them in `git`.
 - I used `git filter branch` to rewrite history and remove the file from `git`.  When I added back the service, I changed the file name to `photo.service` instead of `photos.service`.
 
 ## Continued Development
 
 - Pagination implementation is kind of a mess.  I tried to explain a lot of the tradeoffs and problems I encountered.  
-- When you click back on the detail page, it resets the input and queries new photos.  This might be related to the lack of Local Storage.    
 - Testing -> I'd imagine this will be difficult.  
 
 ## How to Use

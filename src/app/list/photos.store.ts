@@ -4,10 +4,10 @@ import { pipe } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import { Photo } from '../photo.model';
 import { PhotoService } from '../photo.service';
-import { signalStore, withState, withMethods, patchState, withHooks } from '@ngrx/signals';
+import { signalStore, withState, withMethods, patchState, withHooks, signalStoreFeature } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 
-//const PHOTO_STATE_KEY = 'photo_search';
+const PHOTO_STATE_KEY = 'photo_search';
 
 export interface PhotoState {
   photos: Photo[];
@@ -56,7 +56,10 @@ export const PhotoStore = signalStore(
             tapResponse({
               next: (res: any) => patchState(store, { photos: res.photos.photo, pages: res.photos.pages }),
               error: console.error,
-              finalize: () => patchState(store, { loading: false }),
+              finalize: () => {
+                localStorage.setItem(PHOTO_STATE_KEY, JSON.stringify({search: store.search(), page: store.page(), pages: store.pages() }))
+                patchState(store, { loading: false }) 
+              }, 
             }),
           ),
         ),
@@ -70,7 +73,10 @@ export const PhotoStore = signalStore(
             tapResponse({
               next: (res: any) => patchState(store, { photos: res.photos.photo, pages: res.photos.pages }),
               error: console.error,
-              finalize: () => patchState(store, { loading: false }),
+              finalize: () => { 
+                localStorage.setItem(PHOTO_STATE_KEY, JSON.stringify({search: store.search(), page: store.page(), pages: store.pages() }))
+                patchState(store, { loading: false });
+              }
             }),
           ),
         ),
@@ -81,8 +87,36 @@ export const PhotoStore = signalStore(
     onInit({ loadSearch, search }) {
       loadSearch(search);
     },
+    onDestroy(){
+      localStorage.clear();
+    }
   }),
+  localStorageSync()
 );
+
+function localStorageSync(){
+  // even with this, you aren't guaranteed the exact order of images
+  // the batch size is 30 images so the first and last pictures are more likely to change pages
+
+  // if add onDestroy is in this feature -> local storage won't work
+
+  return signalStoreFeature(
+    withHooks({
+      onInit(store) {
+        const storage = localStorage.getItem(PHOTO_STATE_KEY);
+
+        if(storage){
+          const {search, page, pages} = JSON.parse(storage);
+
+          // don't need to be explicit 
+          // patchState(store, {search: search, page: page, pages: pages});
+
+          patchState(store, {search, page, pages });
+        }
+      }
+    })
+  )
+}
 
 /*
 import { inject } from '@angular/core';

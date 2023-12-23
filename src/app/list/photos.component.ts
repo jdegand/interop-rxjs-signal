@@ -27,7 +27,7 @@ import { SearchBoxComponent } from "../search-box.component";
           (click)="store.updatePage()">
           >
         </button>
-        Page :{{ store.page() }} / {{ store.pages() }}
+        Page : {{ store.page() }} / {{ store.pages() }}
       </section>
 
       @if(store.loading()){
