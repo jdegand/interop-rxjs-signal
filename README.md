@@ -2,12 +2,23 @@
 
 [Angular Challenges](https://angular-challenges.vercel.app/) #30 Interoperability Rxjs/Signal Alternative Solution using [NgRx Signal Store](https://ngrx.io/guide/signals/signal-store).
 
+## Screenshots
+
+![](screenshots/interop-rxjs-signal-1.png "Basic search")
+
+***
+
+![](screenshots/interop-rxjs-signal-2.png "Extra conditional logic needed")
+
+***
+
 ## Built With
 
 - [Angular](https://angular.dev)
 - [Angular CLI](https://github.com/angular/angular-cli) version 17.0.7.
 - [NgRx Signal Store](https://ngrx.io/guide/signals/signal-store)
 - [Tailwind](https://tailwindcss.com)
+- [Flickr API](https://www.flickr.com/services/developer/api/)
 
 ## Thoughts
 
@@ -33,7 +44,11 @@
 ## Continued Development
 
 - Pagination implementation is kind of a mess.  I tried to explain a lot of the tradeoffs and problems I encountered.  
-- Testing -> I'd imagine this will be difficult.  
+- Testing -> I'd imagine this will be difficult (lack of documentation).  
+- Problem with local storage -> when you navigate to the detail page and use back arrow, the search term is lost. 
+- Page number is saved -> if you search for something that has less page results, you will see nothing on the page you are on -> need logic to compare page results and local storage page value
+- No disabling of next button when page count has reached max
+- Typescript improvements 
 
 ## How to Use
 

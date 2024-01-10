@@ -27,7 +27,7 @@ export class PhotoService {
                     tags: searchTerm,
                     method: 'flickr.photos.search',
                     format: 'json',
-                    nojsoncallback: '1',
+                    nojsoncallback: '1', // true?
                     tag_mode: 'all',
                     media: 'photos',
                     per_page: '30',

@@ -2,7 +2,9 @@ import { provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig } from '@angular/core';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
+import PhotosComponent from './list/photos.component';
 
+// Home route is initially lazy loaded in starter code
 export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(),
@@ -12,7 +14,7 @@ export const appConfig: ApplicationConfig = {
         {
           path: '',
           pathMatch: 'full',
-          loadComponent: () => import('./list/photos.component'),
+          component: PhotosComponent,
         },
         {
           path: 'detail',
