@@ -1,6 +1,6 @@
 # Interop RxJs Signal
 
-[Angular Challenges](https://angular-challenges.vercel.app/) #30 Interoperability Rxjs/Signal Alternative Solution using [NgRx Signal Store](https://ngrx.io/guide/signals/signal-store).
+[Angular Challenges](https://angular-challenges.vercel.app/challenges/angular/30-interop-rxjs-signal) #30 Interoperability Rxjs/Signal Alternative Solution using [NgRx Signal Store](https://ngrx.io/guide/signals/signal-store).
 
 ## Screenshots
 
@@ -40,6 +40,7 @@
 - Ultimately, I added a similar `signalStoreFeature` called `localStorageSync`.  I used object destructuring and `patchState` to update local state with values from local storage.  
 - The challenge code includes an API key for `flickr`.  Although it is already exposed, I shouldn't have included it in my repo.  So I removed it and added an environments folder with a `apiKey` variable.  Now, you can freely change API keys and not worry about including them in `git`.
 - I used `git filter branch` to rewrite history and remove the file from `git`.  When I added back the service, I changed the file name to `photo.service` instead of `photos.service`.
+- The signal store uses `rxMethod` and RxJs for asynchronous tasks.  If you were to do this challenge normally, all asynchronous tasks should be performed with RxJs and all synchronous tasks should use signals.     
 
 ## Continued Development
 
@@ -47,7 +48,6 @@
 - Testing -> I'd imagine this will be difficult (lack of documentation).  
 - Problem with local storage -> when you navigate to the detail page and use back arrow, the search term is lost. 
 - Page number is saved -> if you search for something that has less page results, you will see nothing on the page you are on -> need logic to compare page results and local storage page value
-- No disabling of next button when page count has reached max
 - Typescript improvements 
 
 ## How to Use

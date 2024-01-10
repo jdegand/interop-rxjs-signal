@@ -32,7 +32,7 @@ export const PhotoStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
   withMethods((store, photoService = inject(PhotoService)) => ({ 
-    updateSearch(search) { // search can be undefined, null, or string 
+    updateSearch(search) {  // the passing of `$event` causes problems typing search 
       patchState(store, { search });
     },
     updatePage() {
@@ -57,7 +57,7 @@ export const PhotoStore = signalStore(
               next: (res: FlickrAPIResponse) => patchState(store, { photos: res.photos.photo, page:res.photos.page, pages: res.photos.pages }),
               error: console.error,
               finalize: () => {
-                // need to add conditional logic to check page values -> otherwise can weird page count i.e. 3/1
+                // need to add conditional logic to check page values -> otherwise can get weird page count i.e. 3/1
                 localStorage.setItem(PHOTO_STATE_KEY, JSON.stringify({search: store.search(), page: store.page(), pages: store.pages() }))
                 patchState(store, { loading: false }) 
               }, 
