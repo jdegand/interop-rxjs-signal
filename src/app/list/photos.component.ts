@@ -23,11 +23,13 @@ import { SearchBoxComponent } from "../search-box.component";
           <
         </button>
         <button
+          [disabled]="store.page() === store.pages()"
+          [class.bg-gray-400]="store.page() === store.pages()"
           class="text-xl border rounded-md p-3"
           (click)="store.updatePage()">
           >
         </button>
-        Page : {{ store.page() }} / {{ store.pages() }}
+        <div>Page : {{ store.page() }} / {{ store.pages() }}</div>
       </section>
 
       @if(store.loading()){
