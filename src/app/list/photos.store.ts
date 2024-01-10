@@ -54,7 +54,7 @@ export const PhotoStore = signalStore(
         switchMap(() => // (search, page)
           photoService.searchPublicPhotos(store.search(), store.page()).pipe(
             tapResponse({
-              next: (res: FlickrAPIResponse) => patchState(store, { photos: res.photos.photo, pages: res.photos.pages }),
+              next: (res: FlickrAPIResponse) => patchState(store, { photos: res.photos.photo, page:res.photos.page, pages: res.photos.pages }),
               error: console.error,
               finalize: () => {
                 // need to add conditional logic to check page values -> otherwise can weird page count i.e. 3/1
@@ -72,7 +72,7 @@ export const PhotoStore = signalStore(
         switchMap(() =>
           photoService.searchPublicPhotos(store.search(), store.page()).pipe(
             tapResponse({
-              next: (res: FlickrAPIResponse) => patchState(store, { photos: res.photos.photo, pages: res.photos.pages }),
+              next: (res: FlickrAPIResponse) => patchState(store, { photos: res.photos.photo, page:res.photos.page, pages: res.photos.pages }),
               error: console.error,
               finalize: () => { 
                 localStorage.setItem(PHOTO_STATE_KEY, JSON.stringify({search: store.search(), page: store.page(), pages: store.pages() }))
