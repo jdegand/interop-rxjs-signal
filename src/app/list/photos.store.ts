@@ -87,13 +87,24 @@ export const PhotoStore = signalStore(
   withHooks({
     onInit({ loadSearch, search }) {
       loadSearch(search);
-    },
-    onDestroy(){
-      localStorage.clear();
     }
   }),
   localStorageSync()
 );
+
+/*
+  withHooks({
+    ...,
+    onDestroy(){
+      localStorage.clear();
+    }
+  })
+
+  When you navigate to the detail page, the component store is destroyed.  Using local storage can preserve the state.
+
+  You can't clear the local storage at any point.  A user would have to clear the local storage afterwards leaving the app. 
+*/
+
 
 function localStorageSync(){
   // even with this, you aren't guaranteed the exact order of images

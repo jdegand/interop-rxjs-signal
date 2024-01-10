@@ -46,7 +46,6 @@
 
 - Pagination implementation is kind of a mess.  I tried to explain a lot of the tradeoffs and problems I encountered.  
 - Testing -> I'd imagine this will be difficult (lack of documentation).  
-- Problem with local storage -> when you navigate to the detail page and use back arrow, the search term is lost. 
 - Page number is saved -> if you search for something that has less page results, you will see nothing on the page you are on -> need logic to compare page results and local storage page value
 - Typescript improvements 
 
