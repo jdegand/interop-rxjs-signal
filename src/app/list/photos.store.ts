@@ -3,7 +3,7 @@ import { tapResponse } from '@ngrx/component-store';
 import { pipe } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import { Photo } from '../photo.model';
-import { PhotoService } from '../photo.service';
+import { FlickrAPIResponse, PhotoService } from '../photo.service';
 import { signalStore, withState, withMethods, patchState, withHooks, signalStoreFeature } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 
@@ -32,7 +32,7 @@ export const PhotoStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
   withMethods((store, photoService = inject(PhotoService)) => ({ 
-    updateSearch(search: any) {
+    updateSearch(search) { // search can be undefined, null, or string 
       patchState(store, { search });
     },
     updatePage() {
@@ -54,7 +54,7 @@ export const PhotoStore = signalStore(
         switchMap(() => // (search, page)
           photoService.searchPublicPhotos(store.search(), store.page()).pipe(
             tapResponse({
-              next: (res: any) => patchState(store, { photos: res.photos.photo, pages: res.photos.pages }),
+              next: (res: FlickrAPIResponse) => patchState(store, { photos: res.photos.photo, pages: res.photos.pages }),
               error: console.error,
               finalize: () => {
                 // need to add conditional logic to check page values -> otherwise can weird page count i.e. 3/1
@@ -72,7 +72,7 @@ export const PhotoStore = signalStore(
         switchMap(() =>
           photoService.searchPublicPhotos(store.search(), store.page()).pipe(
             tapResponse({
-              next: (res: any) => patchState(store, { photos: res.photos.photo, pages: res.photos.pages }),
+              next: (res: FlickrAPIResponse) => patchState(store, { photos: res.photos.photo, pages: res.photos.pages }),
               error: console.error,
               finalize: () => { 
                 localStorage.setItem(PHOTO_STATE_KEY, JSON.stringify({search: store.search(), page: store.page(), pages: store.pages() }))

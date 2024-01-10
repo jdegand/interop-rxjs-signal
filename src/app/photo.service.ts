@@ -6,9 +6,13 @@ import { environment } from '../environments/environment.development';
 
 export interface FlickrAPIResponse {
     photos: {
-        pages: number;
-        photo: Photo[];
-    };
+        page: number
+        pages: number
+        perpage: number
+        total: number
+        photo: Photo[]
+    }
+    stat: string
 }
 
 @Injectable({ providedIn: 'root' })

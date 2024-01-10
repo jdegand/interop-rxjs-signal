@@ -69,6 +69,7 @@ $ npm start
 
 ## Useful Resources
 
+- [transform.tools](https://transform.tools/json-to-typescript) - json to typescript
 - [NgRx Docs](https://ngrx.io/guide/signals/rxjs-integration) - rxjs integration
 - [Angular Training](https://www.angulartraining.com/daily-newsletter/three-ways-to-update-angular-signals/) - 3 ways to update Angular Signals
 - [Github](https://github.com/ngrx/platform/discussions/3796) - (Closed) RFC: NgRx SignalStore
