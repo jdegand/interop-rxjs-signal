@@ -40,14 +40,16 @@
 - Ultimately, I added a similar `signalStoreFeature` called `localStorageSync`.  I used object destructuring and `patchState` to update local state with values from local storage.  
 - The challenge code includes an API key for `flickr`.  Although it is already exposed, I shouldn't have included it in my repo.  So I removed it and added an environments folder with a `apiKey` variable.  Now, you can freely change API keys and not worry about including them in `git`.
 - I used `git filter branch` to rewrite history and remove the file from `git`.  When I added back the service, I changed the file name to `photo.service` instead of `photos.service`.
-- The signal store uses `rxMethod` and RxJs for asynchronous tasks.  If you were to do this challenge normally, all asynchronous tasks should be performed with RxJs and all synchronous tasks should use signals.     
+- The signal store uses `rxMethod` and RxJs for asynchronous tasks.  If you were to do this challenge normally, all asynchronous tasks should be performed with RxJs and all synchronous tasks should use signals.    
+- `newPageSearch` doesn't check local storage.  
+`withHooks` is limited with only 2 methods `onInit` and `onDestroy`. 
 
 ## Continued Development
 
+- Typescript improvements 
 - Pagination implementation is kind of a mess.  I tried to explain a lot of the tradeoffs and problems I encountered.  
 - Testing -> I'd imagine this will be difficult (lack of documentation).  
-- Page number is saved -> if you search for something that has less page results, you will see nothing on the page you are on -> need logic to compare page results and local storage page value
-- Typescript improvements 
+- Page number is saved -> if you search for something that has less page results than the page you are currently on, you will see no images and need to use the back arrow to see the results.  `{ loading: true, page: 1 }` works to solve the problem, but if a user refreshes the page, the page will be lost.  Potentially fixed with a ternary that sets the local storage page value inside the `loadSearch` method.  The potential solution is problematic for TypeScript.  I added `@ts-ignore` above the call.  
 
 ## How to Use
 
@@ -74,3 +76,5 @@ $ npm start
 - [Github](https://github.com/ngrx/platform/discussions/3796) - (Closed) RFC: NgRx SignalStore
 - [Angular Addicts](https://www.angularaddicts.com/p/from-ngrx-componentstore-to-signalstore) - ngrx component store to signal store
 - [Dev.to](https://dev.to/this-is-angular/handling-pagination-with-ngrx-component-stores-1j1p#handling-the-pagination) - handling pagination with ngrx component stores
+- [Angular Architects](https://www.angulararchitects.io/en/blog/the-new-ngrx-signal-store-for-angular-2-1-flavors/) - the new ngrx signal store for angular 2-1-flavors
+- [Stack Overflow](https://stackoverflow.com/questions/16010827/html5-localstorage-checking-if-a-key-exists) - local storage checking if a key exists (use null)

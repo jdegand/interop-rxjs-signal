@@ -31,7 +31,7 @@ const initialState: PhotoState = {
 export const PhotoStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
-  withMethods((store, photoService = inject(PhotoService)) => ({ 
+  withMethods((store, photoService = inject(PhotoService)) => ({
     updateSearch(search) {  // the passing of `$event` causes problems typing search 
       patchState(store, { search });
     },
@@ -50,17 +50,17 @@ export const PhotoStore = signalStore(
       pipe(
         debounceTime(300),
         distinctUntilChanged(),
-        tap(() => patchState(store, { loading: true })),
+        //@ts-ignore
+        tap(() => patchState(store, { loading: true, page: localStorage.getItem('page') !== null ? localStorage.getItem('page') : 1 })),
         switchMap(() => // (search, page)
           photoService.searchPublicPhotos(store.search(), store.page()).pipe(
             tapResponse({
-              next: (res: FlickrAPIResponse) => patchState(store, { photos: res.photos.photo, page:res.photos.page, pages: res.photos.pages }),
+              next: (res: FlickrAPIResponse) => patchState(store, { photos: res.photos.photo, page: res.photos.page, pages: res.photos.pages }),
               error: console.error,
               finalize: () => {
-                // need to add conditional logic to check page values -> otherwise can get weird page count i.e. 3/1
-                localStorage.setItem(PHOTO_STATE_KEY, JSON.stringify({search: store.search(), page: store.page(), pages: store.pages() }))
-                patchState(store, { loading: false }) 
-              }, 
+                localStorage.setItem(PHOTO_STATE_KEY, JSON.stringify({ search: store.search(), page: store.page(), pages: store.pages() }))
+                patchState(store, { loading: false })
+              },
             }),
           ),
         ),
@@ -72,10 +72,10 @@ export const PhotoStore = signalStore(
         switchMap(() =>
           photoService.searchPublicPhotos(store.search(), store.page()).pipe(
             tapResponse({
-              next: (res: FlickrAPIResponse) => patchState(store, { photos: res.photos.photo, page:res.photos.page, pages: res.photos.pages }),
+              next: (res: FlickrAPIResponse) => patchState(store, { photos: res.photos.photo, page: res.photos.page, pages: res.photos.pages }),
               error: console.error,
-              finalize: () => { 
-                localStorage.setItem(PHOTO_STATE_KEY, JSON.stringify({search: store.search(), page: store.page(), pages: store.pages() }))
+              finalize: () => {
+                localStorage.setItem(PHOTO_STATE_KEY, JSON.stringify({ search: store.search(), page: store.page(), pages: store.pages() }))
                 patchState(store, { loading: false });
               }
             }),
@@ -106,7 +106,7 @@ export const PhotoStore = signalStore(
 */
 
 
-function localStorageSync(){
+function localStorageSync() {
   // even with this, you aren't guaranteed the exact order of images
   // the batch size is 30 images so the first and last pictures are more likely to change pages
   // total page count seems to change frequently 
@@ -117,13 +117,13 @@ function localStorageSync(){
       onInit(store) {
         const storage = localStorage.getItem(PHOTO_STATE_KEY);
 
-        if(storage){
-          const {search, page, pages} = JSON.parse(storage);
+        if (storage) {
+          const { search, page, pages } = JSON.parse(storage);
 
           // don't need to be explicit 
           // patchState(store, {search: search, page: page, pages: pages});
 
-          patchState(store, {search, page, pages });
+          patchState(store, { search, page, pages });
         }
       }
     })
