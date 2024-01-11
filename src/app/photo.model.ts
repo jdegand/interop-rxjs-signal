@@ -25,7 +25,7 @@ export interface Photo {
     isfamily: number
     datetaken: string
     datetakengranularity: number
-    datetakenunknown: any
+    datetakenunknown: string
     ownername: string
     tags: string
     url_q: string
