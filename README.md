@@ -8,7 +8,11 @@
 
 ***
 
-![](screenshots/interop-rxjs-signal-2.png "Extra conditional logic needed")
+![](screenshots/interop-rxjs-signal-3.png "No results search")
+
+***
+
+![](screenshots/interop-rxjs-signal-4.png "Limited results disables buttons")
 
 ***
 
@@ -37,19 +41,20 @@
 - `withStorageSync` saves the whole state.  But since I have not segmented state, this doesn't work for this app.  Only the `search`, `page`, and `pages` need to be saved.  
 - Saving `pages` might not be necessary.  There seem to be issues with the `pages` count and it seems to change more often than it should.  Maybe the `flickr` API is so active that the page count would change often for certain keywords.  
 - So options are to try to recreate something similar or maybe just update the `onInit` hook inside `withHooks`.  You can't have multiple `onInit` hooks. 
+- `withHooks` is limited with only 2 methods `onInit` and `onDestroy`. 
 - Ultimately, I added a similar `signalStoreFeature` called `localStorageSync`.  I used object destructuring and `patchState` to update local state with values from local storage.  
+- `newPageSearch` doesn't check local storage. 
 - The challenge code includes an API key for `flickr`.  Although it is already exposed, I shouldn't have included it in my repo.  So I removed it and added an environments folder with a `apiKey` variable.  Now, you can freely change API keys and not worry about including them in `git`.
 - I used `git filter branch` to rewrite history and remove the file from `git`.  When I added back the service, I changed the file name to `photo.service` instead of `photos.service`.
-- The signal store uses `rxMethod` and RxJs for asynchronous tasks.  If you were to do this challenge normally, all asynchronous tasks should be performed with RxJs and all synchronous tasks should use signals.    
-- `newPageSearch` doesn't check local storage.  
-- `withHooks` is limited with only 2 methods `onInit` and `onDestroy`. 
+- The signal store uses `rxMethod` and RxJs for asynchronous tasks.  If you were to do this challenge normally, all asynchronous tasks should be performed with RxJs and all synchronous tasks should use signals.     
 
 ## Continued Development
 
 - Typescript improvements 
 - Pagination implementation is not ideal.  I used a repetitive solution.  
 - Testing -> I'd imagine this will be difficult (lack of documentation).  See [Github](https://github.com/ngrx/platform/issues/4206) for updates.  
-- Page number is saved -> if you search for something that has less page results than the page you are currently on, you will see no images and need to use the back arrow to see the results.  `{ loading: true, page: 1 }` works to solve the problem, but if a user refreshes the page, the page will be lost.  I potentially fixed the problem with a ternary that sets the local storage page value inside the `loadSearch` method. I initially added `@ts-ignore` above the call.  I was able to correct the error by converting the local storage item to a number.  All local storage items are stored as `string` key-value pairs.
+- Page number is saved -> if you search for something that has less page results than the page you are currently on, you will see no images and need to use the back arrow to see the results.  `{ loading: true, page: 1 }` works to solve the problem, but if a user refreshes the page, the page will be lost.  I potentially fixed the problem with a ternary that sets the local storage page value inside the `loadSearch` method. I initially added `@ts-ignore` above the call.  I was able to correct the error by converting the local storage item to a number.  All local storage items are stored as `string` key-value pairs.  This lead me to discovering that the empty results conditional logic was wrong.  I used `@empty` but the condtion was inside another `if` statement so the empty condition was never run.  I converted to use `else` to fix this problem.   
+- Using conditional logic inside a `tap` is less than ideal.  This could be very difficult to test.  Without a total rework, this might be the best solution possible.
 
 ## How to Use
 

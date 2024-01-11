@@ -38,7 +38,7 @@ import { SearchBoxComponent } from "../search-box.component";
         class="mt-5"></mat-progress-bar>
       }
 
-      @if(store.photos() && store.photos().length > 0){
+      @if(store.photos().length > 0){
         <ul class="flex flex-wrap gap-4">
         @for(photo of store.photos(); track photo.id){
           <li>
@@ -49,11 +49,11 @@ import { SearchBoxComponent } from "../search-box.component";
               class="image" />
           </a>
         </li>
-        } @empty {
+        }
+      </ul>
+      } @else {
         <div>No Photos found. Type a search word.</div>
       }
-      </ul>
-      } 
 
       @if(store.error()){
         <footer class="text-red-500">

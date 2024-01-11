@@ -57,7 +57,7 @@ export const PhotoStore = signalStore(
               next: (res: FlickrAPIResponse) => patchState(store, { photos: res.photos.photo, page: res.photos.page, pages: res.photos.pages }),
               error: console.error,
               finalize: () => {
-                localStorage.setItem(PHOTO_STATE_KEY, JSON.stringify({ search: store.search(), page: store.page(), pages: store.pages() }))
+                localStorage.setItem(PHOTO_STATE_KEY, JSON.stringify({ search: store.search(), page: store.page() }))
                 patchState(store, { loading: false })
               },
             }),
@@ -74,7 +74,7 @@ export const PhotoStore = signalStore(
               next: (res: FlickrAPIResponse) => patchState(store, { photos: res.photos.photo, page: res.photos.page, pages: res.photos.pages }),
               error: console.error,
               finalize: () => {
-                localStorage.setItem(PHOTO_STATE_KEY, JSON.stringify({ search: store.search(), page: store.page(), pages: store.pages() }))
+                localStorage.setItem(PHOTO_STATE_KEY, JSON.stringify({ search: store.search(), page: store.page() }))
                 patchState(store, { loading: false });
               }
             }),
@@ -99,9 +99,8 @@ export const PhotoStore = signalStore(
     }
   })
 
-  When you navigate to the detail page, the component store is destroyed.  Using local storage can preserve the state.
-
-  You can't clear the local storage at any point.  A user would have to clear the local storage afterwards leaving the app. 
+  // When you navigate to the detail page, the component store is destroyed.  Using local storage can preserve the state.
+  // You can't clear the local storage at any point.  A user would have to clear the local storage afterwards leaving the app. 
 */
 
 
@@ -117,12 +116,16 @@ function localStorageSync() {
         const storage = localStorage.getItem(PHOTO_STATE_KEY);
 
         if (storage) {
-          const { search, page, pages } = JSON.parse(storage);
+          const { search, page } = JSON.parse(storage);
+
+          // originally stored pages as well but 
+          // pages is quite volatile 
+          // I don't require the pages value for any logic so I removed pages from the local storage object
 
           // don't need to be explicit 
-          // patchState(store, {search: search, page: page, pages: pages});
+          // patchState(store, {search: search, page: page});
 
-          patchState(store, { search, page, pages });
+          patchState(store, { search, page });
         }
       }
     })
