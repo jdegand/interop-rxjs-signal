@@ -47,9 +47,9 @@
 ## Continued Development
 
 - Typescript improvements 
-- Pagination implementation is kind of a mess.  I tried to explain a lot of the tradeoffs and problems I encountered.  
-- Testing -> I'd imagine this will be difficult (lack of documentation).  
-- Page number is saved -> if you search for something that has less page results than the page you are currently on, you will see no images and need to use the back arrow to see the results.  `{ loading: true, page: 1 }` works to solve the problem, but if a user refreshes the page, the page will be lost.  Potentially fixed with a ternary that sets the local storage page value inside the `loadSearch` method. I added `@ts-ignore` initially above the call.  I was able to correct the error by converting the local storage item to a number.  All local storage items are storied as string key-value pairs.
+- Pagination implementation is not ideal.  I used a repetitive solution.  
+- Testing -> I'd imagine this will be difficult (lack of documentation).  See [Github](https://github.com/ngrx/platform/issues/4206) for updates.  
+- Page number is saved -> if you search for something that has less page results than the page you are currently on, you will see no images and need to use the back arrow to see the results.  `{ loading: true, page: 1 }` works to solve the problem, but if a user refreshes the page, the page will be lost.  I potentially fixed the problem with a ternary that sets the local storage page value inside the `loadSearch` method. I initially added `@ts-ignore` above the call.  I was able to correct the error by converting the local storage item to a number.  All local storage items are stored as `string` key-value pairs.
 
 ## How to Use
 
