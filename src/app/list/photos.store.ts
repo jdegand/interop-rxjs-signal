@@ -50,8 +50,7 @@ export const PhotoStore = signalStore(
       pipe(
         debounceTime(300),
         distinctUntilChanged(),
-        //@ts-ignore
-        tap(() => patchState(store, { loading: true, page: localStorage.getItem('page') !== null ? localStorage.getItem('page') : 1 })),
+        tap(() => patchState(store, { loading: true, page: localStorage.getItem('page') !== null ? Number(localStorage.getItem('page')) : 1 })),
         switchMap(() => // (search, page)
           photoService.searchPublicPhotos(store.search(), store.page()).pipe(
             tapResponse({

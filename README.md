@@ -42,14 +42,14 @@
 - I used `git filter branch` to rewrite history and remove the file from `git`.  When I added back the service, I changed the file name to `photo.service` instead of `photos.service`.
 - The signal store uses `rxMethod` and RxJs for asynchronous tasks.  If you were to do this challenge normally, all asynchronous tasks should be performed with RxJs and all synchronous tasks should use signals.    
 - `newPageSearch` doesn't check local storage.  
-`withHooks` is limited with only 2 methods `onInit` and `onDestroy`. 
+- `withHooks` is limited with only 2 methods `onInit` and `onDestroy`. 
 
 ## Continued Development
 
 - Typescript improvements 
 - Pagination implementation is kind of a mess.  I tried to explain a lot of the tradeoffs and problems I encountered.  
 - Testing -> I'd imagine this will be difficult (lack of documentation).  
-- Page number is saved -> if you search for something that has less page results than the page you are currently on, you will see no images and need to use the back arrow to see the results.  `{ loading: true, page: 1 }` works to solve the problem, but if a user refreshes the page, the page will be lost.  Potentially fixed with a ternary that sets the local storage page value inside the `loadSearch` method.  The potential solution is problematic for TypeScript.  I added `@ts-ignore` above the call.  
+- Page number is saved -> if you search for something that has less page results than the page you are currently on, you will see no images and need to use the back arrow to see the results.  `{ loading: true, page: 1 }` works to solve the problem, but if a user refreshes the page, the page will be lost.  Potentially fixed with a ternary that sets the local storage page value inside the `loadSearch` method. I added `@ts-ignore` initially above the call.  I was able to correct the error by converting the local storage item to a number.  All local storage items are storied as string key-value pairs.
 
 ## How to Use
 
