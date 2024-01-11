@@ -29,7 +29,9 @@ import { SearchBoxComponent } from "../search-box.component";
           (click)="store.updatePage()">
           >
         </button>
-        <div>Page : {{ store.page() }} / {{ store.pages() }}</div>
+        @if(store.photos().length > 0){
+          <div>Page : {{ store.page() }} / {{ store.pages() }}</div>
+        }
       </section>
 
       @if(store.loading()){

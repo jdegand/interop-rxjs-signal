@@ -8,7 +8,7 @@
 
 ***
 
-![](screenshots/interop-rxjs-signal-3.png "No results search")
+![](screenshots/interop-rxjs-signal-3.png "*fixed* page count displaying with no results")
 
 ***
 
