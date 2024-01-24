@@ -48,20 +48,30 @@ export const PhotoStore = signalStore(
     },
     loadSearch: rxMethod<string>(
       pipe(
-        debounceTime(300),
+        debounceTime(300), // there can be hiccups because the debounce time is small -> page can linger 
         distinctUntilChanged(),
-        tap(() => patchState(store, { loading: true, page: localStorage.getItem('page') !== null ? Number(localStorage.getItem('page')) : 1 })),  // this isn't right
-        switchMap(() => // (search, page)
+        tap(() => {
+          // doing it this way -> you can reload and get same page and search term
+          // if you click a detail page before navigating to another page -> there is no local storage to check
+          const storage = localStorage.getItem(PHOTO_STATE_KEY);
+          if (storage) {
+            const { page } = JSON.parse(storage);
+            patchState(store, { loading: true, page: Number(page) });
+            localStorage.clear();
+          } else {
+            patchState(store, { loading: true, page: 1 });
+          }
+        }),
+        switchMap(() =>
           photoService.searchPublicPhotos(store.search(), store.page()).pipe(
             tapResponse({
               next: (res: FlickrAPIResponse) => patchState(store, { photos: res.photos.photo, page: res.photos.page, pages: res.photos.pages }),
               error: console.error,
               finalize: () => {
-                localStorage.setItem(PHOTO_STATE_KEY, JSON.stringify({ search: store.search(), page: store.page() }))
-                patchState(store, { loading: false })
+                patchState(store, { loading: false, page: store.page() })
               },
             }),
-          ),
+          )
         ),
       ),
     ),
