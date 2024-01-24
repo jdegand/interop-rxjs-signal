@@ -50,7 +50,7 @@ export const PhotoStore = signalStore(
       pipe(
         debounceTime(300),
         distinctUntilChanged(),
-        tap(() => patchState(store, { loading: true, page: localStorage.getItem('page') !== null ? Number(localStorage.getItem('page')) : 1 })),
+        tap(() => patchState(store, { loading: true, page: localStorage.getItem('page') !== null ? Number(localStorage.getItem('page')) : 1 })),  // this isn't right
         switchMap(() => // (search, page)
           photoService.searchPublicPhotos(store.search(), store.page()).pipe(
             tapResponse({
@@ -131,3 +131,18 @@ function localStorageSync() {
     })
   )
 }
+
+
+/*
+// problem with saving the page number
+// it was working but after refactoring -> I broke it at some point
+// localStorage.getItem('page') returns nothing -> page is part of photo_search object
+
+const storage = localStorage.getItem(PHOTO_STATE_KEY);
+if (storage) {
+  const { search, page } = JSON.parse(storage);
+  patchState(store, { loading: true, page: Number(page) });
+} else {
+  patchState(store, { loading: true, page: 1 });
+}
+*/
