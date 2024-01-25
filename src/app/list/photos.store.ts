@@ -53,6 +53,7 @@ export const PhotoStore = signalStore(
         tap(() => {
           // doing it this way -> you can reload and get same page and search term
           // if you click a detail page before navigating to another page -> there is no local storage to check
+          // if click on multiple detail pages without navigating, you will lose the page and search term
           const storage = localStorage.getItem(PHOTO_STATE_KEY);
           if (storage) {
             const { page } = JSON.parse(storage);
