@@ -53,7 +53,9 @@ export const PhotoStore = signalStore(
         tap(() => {
           // doing it this way -> you can reload and get same page and search term
           // if you click a detail page before navigating to another page -> there is no local storage to check
-          // if click on multiple detail pages without navigating, you will lose the page and search term
+          // you can only click on 2 pictures before reset
+          // just checking storage exists -> narrow conditional ?
+          // add another flag?
           const storage = localStorage.getItem(PHOTO_STATE_KEY);
           if (storage) {
             const { page } = JSON.parse(storage);
@@ -111,7 +113,6 @@ export const PhotoStore = signalStore(
   })
 
   // When you navigate to the detail page, the component store is destroyed.  Using local storage can preserve the state.
-  // You can't clear the local storage at any point.  A user would have to clear the local storage afterwards leaving the app. 
 */
 
 
@@ -142,18 +143,3 @@ function localStorageSync() {
     })
   )
 }
-
-
-/*
-// problem with saving the page number
-// it was working but after refactoring -> I broke it at some point
-// localStorage.getItem('page') returns nothing -> page is part of photo_search object
-
-const storage = localStorage.getItem(PHOTO_STATE_KEY);
-if (storage) {
-  const { search, page } = JSON.parse(storage);
-  patchState(store, { loading: true, page: Number(page) });
-} else {
-  patchState(store, { loading: true, page: 1 });
-}
-*/
